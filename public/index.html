@@ -12,17 +12,21 @@
 			  }
 			}
 		  </script>
-		  <script type="module" src="/main.js"></script>
+		  <script type="module" src="main.js"></script>
+		  <script type="module" src="/threeDrender.js"></script>
 	</head>
-	<body>		
-		<div class="borderforthree">
-			<div id = "prc" class="threeDView"></div>
+	<body>	
+		<!-- 3D View-->	
+		<div class="borderForThree">
+			<div id = "threeDView" class="threeDView"></div>
 		</div>
+
+		<!-- Other Things on The Page-->
 		<div class = stats>
-			<div class="amps">Amps</div>
-			<div class="degree">Degree</div>
-			<div class="torque">Torque</div>
-			<div class="extra">Extra</div>
+			<div id ="amps"  class="amps">Amps</div>
+			<div id ="degree" class="degree">Degree</div>
+			<div id ="torque" class="torque">Torque</div>
+			<div id ="extra" class="extra">Extra</div>
 			<img src="logo.png" class="logo">
 		</div>
 	</body>

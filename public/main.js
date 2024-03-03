@@ -1,73 +1,24 @@
-import WebGL from 'three/addons/capabilities/WebGL.js'; if ( WebGL.isWebGLAvailable() ) { } else { const warning = WebGL.getWebGLErrorMessage(); document.getElementById( 'container' ).appendChild( warning ); }
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import {getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js';
 
+const firebaseConfig = {
+    apiKey: "AIzaSyC41z5UgfqDsD5ehmk9ouIxQj1DHagjF68",
+    authDomain: "dronesimproject2024.firebaseapp.com",
+    databaseURL: "https://dronesimproject2024-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "dronesimproject2024",
+    storageBucket: "dronesimproject2024.appspot.com",
+    messagingSenderId: "764690212750",
+    appId: "1:764690212750:web:9a9e0bf6cb2d44835ca6df",
+    measurementId: "G-QM3XZDC0LQ"
+  };
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
 
-const prc = document.getElementById('prc');
+const extra = document.getElementById("extra");
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(prc.offsetWidth,prc.offsetHeight );
-renderer.setClearColor(0xBBBBBB);
-prc.appendChild( renderer.domElement );
-
-const controls = new OrbitControls( camera, renderer.domElement );
-
-//light to see obj better
-const directionalLight = new THREE.DirectionalLight( 0xffffff, 2.0 );
-scene.add( directionalLight );
-
-const light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-
-  light.position.set(0, 10, 0);
-scene.add( light);
-
-const dilight = new THREE.DirectionalLight( 0xffffff, 5);
-dilight.position.set(-10,20, -10);
-scene.add(dilight);
-
-const delight = new THREE.DirectionalLight(0xffffff, 5);
-delight.position.set(10,10, 10);
-scene.add(delight);
-
-const belowlight = new THREE.DirectionalLight( 0xffffff, 3 );
-belowlight.position.set(0,-10,0);
-scene.add(belowlight);
-
-//cam positioning
-camera.position.set( 2, 2, 2 );
-controls.update();
-
-//functions
-const loader = new GLTFLoader();
-let mixer;
-
-loader.load( 'realthing.glb', function ( gltf ) {
-	const model = gltf.scene;
-	scene.add( model );
-	mixer = new THREE.AnimationMixer(model);
-	const clips = gltf.animations;
-	clips.forEach(function(clip) {
-		const action = mixer.clipAction(clip);
-		action.play();
-	});
-
-}, undefined, function ( error ) {
-
-	console.error( error );
-
-} );
-
-const clock = new THREE.Clock();
-
-function animate() {
-	requestAnimationFrame( animate );
-	controls.update();
-	if(mixer)
-		mixer.update(clock.getDelta());
-	renderer.render( scene, camera );
-}
-animate();
+const testRef = ref(db, 'test/float');
+onValue(testRef, (snapshot) => {
+  const data = snapshot.val();
+  extra.innerHTML = data;
+});
