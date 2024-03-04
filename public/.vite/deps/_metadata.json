@@ -1,0 +1,37 @@
+{
+  "hash": "fc55a587",
+  "configHash": "2b2cb6f8",
+  "lockfileHash": "3b174439",
+  "browserHash": "c9180fc4",
+  "optimized": {
+    "three/addons/capabilities/WebGL.js": {
+      "src": "../../../node_modules/three/examples/jsm/capabilities/WebGL.js",
+      "file": "three_addons_capabilities_WebGL__js.js",
+      "fileHash": "4c0954f9",
+      "needsInterop": false
+    },
+    "three": {
+      "src": "../../../node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "f338066f",
+      "needsInterop": false
+    },
+    "three/addons/loaders/GLTFLoader.js": {
+      "src": "../../../node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+      "file": "three_addons_loaders_GLTFLoader__js.js",
+      "fileHash": "3225ba4c",
+      "needsInterop": false
+    },
+    "three/addons/controls/OrbitControls.js": {
+      "src": "../../../node_modules/three/examples/jsm/controls/OrbitControls.js",
+      "file": "three_addons_controls_OrbitControls__js.js",
+      "fileHash": "d92e15a4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-2SB4NEDC": {
+      "file": "chunk-2SB4NEDC.js"
+    }
+  }
+}
