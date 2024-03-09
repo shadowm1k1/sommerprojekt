@@ -18,7 +18,9 @@ const db = getDatabase();
 const extra = document.getElementById("extra");
 
 const testRef = ref(db, 'test/float');
+
 onValue(testRef, (snapshot) => {
   const data = snapshot.val();
   extra.innerHTML = data;
 });
+
