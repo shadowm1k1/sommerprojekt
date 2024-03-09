@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include "GY_85.h"
 #include <Firebase_ESP_Client.h>
 
 // Provide the token generation process info.
@@ -10,14 +11,17 @@
 #define API_KEY "AIzaSyC41z5UgfqDsD5ehmk9ouIxQj1DHagjF68"
 #define DATABASE_URL "https://dronesimproject2024-default-rtdb.europe-west1.firebasedatabase.app/"
 
-#define WIFI_SSID "PTFWifi"
-#define WIFI_PASSWORD "PtfWifiIsTheBest"
+#define WIFI_SSID "Bulme-EMC"
+#define WIFI_PASSWORD ""
 
 // Define Firebase Data object
 FirebaseData fbdo;
 
 FirebaseAuth auth;
 FirebaseConfig config;
+
+// create GYRO OBJECT
+GY_85 GY85;
 
 String uid;
 unsigned long sendDataPrevMillis = 0;
@@ -66,6 +70,10 @@ void setup()
   Firebase.begin(&config, &auth);
   Firebase.reconnectWiFi(true);
 
+  GY85.init();
+  Serial.println("proso init");
+  delay(500);
+
   //
   // Getting the user UID might take a few seconds
   Serial.println("Getting User UID");
@@ -98,4 +106,50 @@ void loop()
       Serial.println("REASON: " + fbdo.errorReason());
     }
   }
+
+  int *accelerometerReadings = GY85.readFromAccelerometer();
+  int ax = GY85.accelerometer_x(accelerometerReadings);
+  int ay = GY85.accelerometer_y(accelerometerReadings);
+  int az = GY85.accelerometer_z(accelerometerReadings);
+
+  int *compassReadings = GY85.readFromCompass();
+  int cx = GY85.compass_x(compassReadings);
+  int cy = GY85.compass_y(compassReadings);
+  int cz = GY85.compass_z(compassReadings);
+
+  float *gyroReadings = GY85.readGyro();
+  float gx = GY85.gyro_x(gyroReadings);
+  float gy = GY85.gyro_y(gyroReadings);
+  float gz = GY85.gyro_z(gyroReadings);
+  float gt = GY85.temp(gyroReadings);
+
+  // Log it to serial port
+  Serial.print("accelerometer");
+  Serial.print(" x:");
+  Serial.print(ax);
+  Serial.print(" y:");
+  Serial.print(ay);
+  Serial.print(" z:");
+  Serial.print(az);
+
+  Serial.print("\t compass");
+  Serial.print(" x:");
+  Serial.print(cx);
+  Serial.print(" y:");
+  Serial.print(cy);
+  Serial.print(" z:");
+  Serial.print(cz);
+
+  Serial.print("\t  gyro");
+  Serial.print(" x:");
+  Serial.print(gx);
+  Serial.print(" y:");
+  Serial.print(gy);
+  Serial.print(" z:");
+  Serial.print(gz);
+  Serial.print("\t gyro temp:");
+  Serial.println(gt);
+
+  // Make delay between readings
+  delay(100);
 }
