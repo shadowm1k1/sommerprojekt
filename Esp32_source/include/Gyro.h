@@ -1,11 +1,10 @@
-#pragma once
-
 class Gyro
 {
-public: 
+public:
     void initAccel();
-    void getAccelData(float &x,float &y,float &z);
+    void getAccelData(float &x, float &y, float &z);
     void printAccelData();
+
+    void initGyro();
+    void getGyroData(float &x, float &y, float &z);
 };
-
-
