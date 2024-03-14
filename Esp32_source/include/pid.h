@@ -1,10 +1,9 @@
 #include <Arduino.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 
 class Pid
 {
 public:
-    void getData(&x, &y, &z);
     void initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pwm);
     void updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_rawX, float Acc_rawY, float Acc_rawZ);
     Servo right_prop; // 2 Objects Servo deklaration --> pwm signal später

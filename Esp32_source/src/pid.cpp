@@ -1,13 +1,9 @@
 #include "pid.h"
-#define LEFT_PROP 5
-#define RIGHT_PROP 3
-#define MAX_PWM 2000
-#define MIN_PWM 1000
 
 void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pwm) // werte festlegen, für setup
 {
-    right_prop.attach(right_prop_val); // verbinden des rechten motors pin 3
-    left_prop.attach(left_prop_val);   // verbinden des linken  motors pin 5
+    right_prop.attach(right_prop_val, min_pwm, max_pwm); // verbinden des rechten motors pin 3 ...
+    left_prop.attach(left_prop_val, min_pwm, max_pwm);   // verbinden des linken  motors pin 5 ...
     pid_p = 0;
     pid_i = 0;
     pid_d = 0;
@@ -18,10 +14,10 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     ///////////////////////////////////////////////
     throttle = 1300;
     desired_angle = 0;
-    time = millis();                      // zeit in millis hochzählen
-    left_prop.writeMicroseconds(min_pwm); // die kleinst möglichen values fürs erste übergeben für esc
-    right_prop.writeMicroseconds(max_pwm);
-    delay(7000); // kann wegelassen werden --> hier eher unnötig
+    time = millis();           // zeit in millis hochzählen
+    left_prop.write(min_pwm);  // die kleinst möglichen values fürs erste übergeben für esc ...
+    right_prop.write(max_pwm); //...
+    delay(7000);               // kann wegelassen werden --> hier eher unnötig
 }
 
 void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_rawX, float Acc_rawY, float Acc_rawZ) // winkel und error ausrechnen
@@ -30,9 +26,9 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     time = millis(); // actual time read
     elapsedTime = (time - timePrev) / 1000;
     /*---X---*/
-    Acceleration_angle[0] = atan((Acc_rawY / 16384.0) / sqrt(pow((Acc_rawX / 16384.0), 2) + pow((Acc_rawZ / 16384.0), 2))) * rad_to_deg;
+    Acceleration_angle[0] = atan((Acc_rawY / 256) / sqrt(pow((Acc_rawX / 256), 2) + pow((Acc_rawZ / 256), 2))) * rad_to_deg;
     /*---Y---*/
-    Acceleration_angle[1] = atan(-1 * (Acc_rawX / 16384.0) / sqrt(pow((Acc_rawY / 16384.0), 2) + pow((Acc_rawZ / 16384.0), 2))) * rad_to_deg;
+    Acceleration_angle[1] = atan(-1 * (Acc_rawX / 256) / sqrt(pow((Acc_rawY / 256), 2) + pow((Acc_rawZ / 256), 2))) * rad_to_deg;
     /*---X---*/
     Gyro_angle[0] = Gyr_rawX / 131.0;
     /*---Y---*/
@@ -127,15 +123,7 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
 
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/
-    left_prop.writeMicroseconds(pwmLeft);
-    right_prop.writeMicroseconds(pwmRight);
+    left_prop.write(pwmLeft);
+    right_prop.write(pwmRight);
     previous_error = error; // Remember to store the previous error.
 } // end of loop void
-
-void Pid::getData(int &x, int &y, int &z) // daten übergeben
-{
-    x = error;
-    y = pwmLeft;
-    z = pwmRight;
-    // welche daten muss ich übergeben
-}
