@@ -7,12 +7,12 @@
 #define WIFI_SSID "Bulme-EMC"
 #define WIFI_PASSWORD ""
 
-// Gyro Object and Vallues
-Gyro myGyro;
 float accelX, accelY, accelZ;
 float gyroX, gyroY, gyroZ;
-FirebaseDb myFirebaseDatabase;
+
+Mpu myMpu;
 Pid myPid;
+FirebaseDb myFirebaseDatabase;
 
 void initWiFi()
 {
@@ -35,10 +35,9 @@ void setup()
   initWiFi();
 
   // initialize Accelorometer
-  myGyro.initAccel();
-  myGyro.initGyro();
+  myMpu.init();
   myPid.initPid(32, 33, 1000, 2000);
-  myFirebaseDatabase.init();
+  // myFirebaseDatabase.init();
 
   Serial.println("proso init");
   delay(500);
@@ -47,16 +46,9 @@ void setup()
 void loop()
 {
   // myFirebaseDatabase.upload();
-  Serial.println("Accel;");
-  myGyro.getAccelData(accelX, accelY, accelZ);
+  myMpu.getData(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
+  myPid.updatePid(gyroX, gyroY, gyroZ, accelX, accelY, accelZ);
+ 
 
-  myGyro.getGyroData(gyroX, gyroY, gyroZ);
 
-  // myPid.updatePid(gyroX, gyroY, gyroZ, accelX, accelY, accelZ);
-  myPid.left_prop.write(1000);
-  myPid.right_prop.write(2000);
-  delay(3000);
-  myPid.left_prop.write(2000);
-  myPid.right_prop.write(1000);
-  delay(3000);
 }

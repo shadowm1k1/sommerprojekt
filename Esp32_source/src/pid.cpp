@@ -8,16 +8,15 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     pid_i = 0;
     pid_d = 0;
     /////////////////PID CONSTANTS/////////////////
-    kp = 0; // 3.55 --> example value
-    ki = 0; // 0.003 --> example value, normally very small
-    kd = 0; // 2.05 --> example value
+    kp = 3; // 3.55 --> example value
+    ki = 0.001; // 0.003 --> example value, normally very small
+    kd = 2; // 2.05 --> example value
     ///////////////////////////////////////////////
     throttle = 1300;
     desired_angle = 0;
     time = millis();           // zeit in millis hochzählen
     left_prop.write(min_pwm);  // die kleinst möglichen values fürs erste übergeben für esc ...
     right_prop.write(max_pwm); //...
-    delay(7000);               // kann wegelassen werden --> hier eher unnötig
 }
 
 void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_rawX, float Acc_rawY, float Acc_rawZ) // winkel und error ausrechnen
@@ -25,14 +24,19 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     timePrev = time; // the previous time is stored before the actual time read
     time = millis(); // actual time read
     elapsedTime = (time - timePrev) / 1000;
+
+    Gyr_rawX = Gyr_rawX * rad_to_deg;
+    Gyr_rawY = Gyr_rawY * rad_to_deg;
+    Gyr_rawZ = Gyr_rawZ * rad_to_deg;
+
     /*---X---*/
-    Acceleration_angle[0] = atan((Acc_rawY / 256) / sqrt(pow((Acc_rawX / 256), 2) + pow((Acc_rawZ / 256), 2))) * rad_to_deg;
+    Acceleration_angle[0] = atan((Acc_rawY / 16384.0) / sqrt(pow((Acc_rawX / 16384.0), 2) + pow((Acc_rawZ / 16384.0), 2))) * rad_to_deg;
     /*---Y---*/
-    Acceleration_angle[1] = atan(-1 * (Acc_rawX / 256) / sqrt(pow((Acc_rawY / 256), 2) + pow((Acc_rawZ / 256), 2))) * rad_to_deg;
+    Acceleration_angle[1] = atan(-1 * (Acc_rawX / 16384.0) / sqrt(pow((Acc_rawY / 16384.0), 2) + pow((Acc_rawZ / 16384.0), 2))) * rad_to_deg;
     /*---X---*/
-    Gyro_angle[0] = Gyr_rawX / 131.0;
+    Gyro_angle[0] = Gyr_rawX / 16.4;
     /*---Y---*/
-    Gyro_angle[1] = Gyr_rawY / 131.0;
+    Gyro_angle[1] = Gyr_rawY / 16.4;
 
     /*Now in order to obtain degrees we have to multiply the degree/seconds
      *value by the elapsedTime.*/
@@ -120,7 +124,6 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     {
         pwmLeft = 2000;
     }
-
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/
     left_prop.write(pwmLeft);

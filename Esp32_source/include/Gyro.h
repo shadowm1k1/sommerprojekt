@@ -1,10 +1,6 @@
-class Gyro
+class Mpu
 {
 public:
-    void initAccel();
-    void getAccelData(float &x, float &y, float &z);
-    void printAccelData();
-
-    void initGyro();
-    void getGyroData(float &x, float &y, float &z);
+    void init();
+    void getData(float &aX, float &aY, float &aZ, float &gX, float &gY, float &gZ);
 };
