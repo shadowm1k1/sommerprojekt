@@ -48,7 +48,4 @@ void loop()
   // myFirebaseDatabase.upload();
   myMpu.getData(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
   myPid.updatePid(gyroX, gyroY, gyroZ, accelX, accelY, accelZ);
- 
-
-
 }
