@@ -8,15 +8,16 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     pid_i = 0;
     pid_d = 0;
     /////////////////PID CONSTANTS/////////////////
-    kp = 3; // 3.55 --> example value
+    kp = 3;     // 3.55 --> example value
     ki = 0.001; // 0.003 --> example value, normally very small
-    kd = 2; // 2.05 --> example value
+    kd = 2;     // 2.05 --> example value
     ///////////////////////////////////////////////
     throttle = 1300;
     desired_angle = 0;
-    time = millis();           // zeit in millis hochzählen
-    left_prop.write(min_pwm);  // die kleinst möglichen values fürs erste übergeben für esc ...
-    right_prop.write(max_pwm); //...
+    time = millis();          // zeit in millis hochzählen
+    left_prop.write(min_pwm); // die kleinst möglichen values fürs erste übergeben für esc ...
+    right_prop.write(min_pwm);
+    delay(7000); //...
 }
 
 void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_rawX, float Acc_rawY, float Acc_rawZ) // winkel und error ausrechnen
@@ -89,13 +90,13 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     have a value of 2000us the maximum value taht we could sybstract is 1000 and when
     we have a value of 1000us for the PWM sihnal, the maximum value that we could add is 1000
     to reach the maximum 2000us*/
-    if (PID < -1000)
+    if (PID < -500)
     {
-        PID = -1000;
+        PID = -500;
     }
-    if (PID > 1000)
+    if (PID > 500)
     {
-        PID = 1000;
+        PID = 500;
     }
 
     /*Finnaly we calculate the PWM width. We sum the desired throttle and the PID value*/
@@ -111,18 +112,18 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     {
         pwmRight = 1000;
     }
-    if (pwmRight > 2000)
+    if (pwmRight > 1200)
     {
-        pwmRight = 2000;
+        pwmRight = 1200;
     }
     // Left
     if (pwmLeft < 1000)
     {
         pwmLeft = 1000;
     }
-    if (pwmLeft > 2000)
+    if (pwmLeft > 1200)
     {
-        pwmLeft = 2000;
+        pwmLeft = 1200;
     }
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/

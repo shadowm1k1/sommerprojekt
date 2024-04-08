@@ -4,8 +4,8 @@
 #include "pid.h"
 #include "firebase.h"
 
-#define WIFI_SSID "Bulme-EMC"
-#define WIFI_PASSWORD ""
+#define WIFI_SSID "PTFWifi"
+#define WIFI_PASSWORD "PtfWifiIsTheBest"
 
 float accelX, accelY, accelZ;
 float gyroX, gyroY, gyroZ;
@@ -13,6 +13,7 @@ float gyroX, gyroY, gyroZ;
 Mpu myMpu;
 Pid myPid;
 FirebaseDb myFirebaseDatabase;
+int speed = 1000;
 
 void initWiFi()
 {
@@ -40,6 +41,7 @@ void setup()
   // myFirebaseDatabase.init();
 
   Serial.println("proso init");
+
   delay(500);
 }
 
@@ -47,5 +49,7 @@ void loop()
 {
   // myFirebaseDatabase.upload();
   myMpu.getData(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
-  myPid.updatePid(gyroX, gyroY, gyroZ, accelX, accelY, accelZ);
+  myPid.updatePid(gyroY, gyroX, gyroZ, accelY, accelX, accelZ);
+  myPid.left_prop.write(1100);
+  myPid.right_prop.write(1100);
 }
