@@ -2,22 +2,23 @@
 
 void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pwm) // werte festlegen, für setup
 {
-    right_prop.attach(right_prop_val, min_pwm, max_pwm); // verbinden des rechten motors pin 3 ...
-    left_prop.attach(left_prop_val, min_pwm, max_pwm);   // verbinden des linken  motors pin 5 ...
+    right_prop.attach(right_prop_val); // verbinden des rechten motors pin 3 ...
+    left_prop.attach(left_prop_val);   // verbinden des linken  motors pin 5 ...
     pid_p = 0;
     pid_i = 0;
     pid_d = 0;
     /////////////////PID CONSTANTS/////////////////
-    kp = 3;     // 3.55 --> example value
-    ki = 0.001; // 0.003 --> example value, normally very small
-    kd = 2;     // 2.05 --> example value
+    kp = 4;    // 3.55 --> example value
+    ki = 0.01; // 0.003 --> example value, normally very small
+    kd = 1.5;  // 2.05 --> example value
     ///////////////////////////////////////////////
-    throttle = 1300;
+    throttle = 1000;
     desired_angle = 0;
     time = millis();          // zeit in millis hochzählen
     left_prop.write(min_pwm); // die kleinst möglichen values fürs erste übergeben für esc ...
     right_prop.write(min_pwm);
-    delay(7000); //...
+    Serial.print(min_pwm);
+    delay(3000); //...
 }
 
 void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_rawX, float Acc_rawY, float Acc_rawZ) // winkel und error ausrechnen
@@ -57,6 +58,7 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     /*First calculate the error between the desired angle and
      *the real measured angle*/
     error = Total_angle[1] - desired_angle;
+    Serial.println(error);
 
     /*Next the proportional value of the PID is just a proportional constant
      *multiplied by the error*/
@@ -90,13 +92,13 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     have a value of 2000us the maximum value taht we could sybstract is 1000 and when
     we have a value of 1000us for the PWM sihnal, the maximum value that we could add is 1000
     to reach the maximum 2000us*/
-    if (PID < -500)
+    if (PID < -250)
     {
-        PID = -500;
+        PID = -250;
     }
-    if (PID > 500)
+    if (PID > 250)
     {
-        PID = 500;
+        PID = 250;
     }
 
     /*Finnaly we calculate the PWM width. We sum the desired throttle and the PID value*/
@@ -108,26 +110,27 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     throttle value of 1300, if we sum the max PID value we would have 2300us and
     that will mess up the ESC.*/
     // Right
-    if (pwmRight < 1000)
+    if (pwmRight < 750)
     {
-        pwmRight = 1000;
+        pwmRight = 750;
     }
-    if (pwmRight > 1200)
+    if (pwmRight > 1250)
     {
-        pwmRight = 1200;
+        pwmRight = 1250;
     }
     // Left
-    if (pwmLeft < 1000)
+    if (pwmLeft < 750)
     {
-        pwmLeft = 1000;
+        pwmLeft = 750;
     }
-    if (pwmLeft > 1200)
+    if (pwmLeft > 1250)
     {
-        pwmLeft = 1200;
+        pwmLeft = 1250;
     }
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/
     left_prop.write(pwmLeft);
     right_prop.write(pwmRight);
+
     previous_error = error; // Remember to store the previous error.
 } // end of loop void

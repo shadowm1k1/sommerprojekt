@@ -37,12 +37,8 @@ void setup()
 
   // initialize Accelorometer
   myMpu.init();
-  myPid.initPid(32, 33, 1000, 2000);
+  myPid.initPid(32, 33, 750, 2000);
   // myFirebaseDatabase.init();
-
-  Serial.println("proso init");
-
-  delay(500);
 }
 
 void loop()
@@ -50,6 +46,4 @@ void loop()
   // myFirebaseDatabase.upload();
   myMpu.getData(accelX, accelY, accelZ, gyroX, gyroY, gyroZ);
   myPid.updatePid(gyroY, gyroX, gyroZ, accelY, accelX, accelZ);
-  myPid.left_prop.write(1100);
-  myPid.right_prop.write(1100);
 }
