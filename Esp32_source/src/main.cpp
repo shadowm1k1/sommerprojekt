@@ -37,7 +37,7 @@ void setup()
 
   // initialize Accelorometer
   myMpu.init();
-  myPid.initPid(32, 33, 750, 2000);
+  myPid.initPid(32, 33, 25, 26, 750, 2000);
   // myFirebaseDatabase.init();
 }
 
