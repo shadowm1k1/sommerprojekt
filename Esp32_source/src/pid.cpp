@@ -10,8 +10,7 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     /////////////////PID CONSTANTS/////////////////
     kp = 3.55;  // 3.55 --> example value
     ki = 0.001; // 0.003 --> example value, normally very small
-
-    kd = 2.05; // 2.05 --> example value
+    kd = 2.05;  // 2.05 --> example value
     ///////////////////////////////////////////////
     throttle = 1050;
     desired_angle = 0;
