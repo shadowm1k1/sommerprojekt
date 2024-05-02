@@ -4,8 +4,8 @@
 #include "pid.h"
 #include "firebase.h"
 
-#define WIFI_SSID "PTFWifi"
-#define WIFI_PASSWORD "PtfWifiIsTheBest"
+#define WIFI_SSID "Bulme-EMC"
+#define WIFI_PASSWORD ""
 
 float accelX, accelY, accelZ;
 float gyroX, gyroY, gyroZ;
