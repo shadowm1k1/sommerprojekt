@@ -29,7 +29,7 @@ void FirebaseDb::init()
     config.database_url = DATABASE_URL;
 
     /* Sign up */
-    if (Firebase.signUp(&config, &auth, "", ""))
+    if (Firebase.signUp(&config, &auth, "bajrektarevic01@gmail.com", "123456789"))
     {
         Serial.println("ok");
         signupOK = true;
@@ -63,4 +63,6 @@ void FirebaseDb::upload()
             Serial.println("REASON: " + fbdo.errorReason());
         }
     }
+    else
+        Serial.println("kurton");
 }
