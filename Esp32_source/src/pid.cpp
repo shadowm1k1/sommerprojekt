@@ -13,7 +13,7 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     ki = 0.003; // 0.003 --> example value, normally very small
     kd = 4;     // 2.05 --> example value
     ///////////////////////////////////////////////
-    throttle = 2000;
+    throttle = 1300;
     desired_angle = 0;
     time = millis(); // zeit in millis hochzählen
                      // die kleinst möglichen values fürs erste übergeben für esc ...
@@ -89,11 +89,11 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     /*The final PIDY values is the sum of each of this 3 parts*/
     PID = pid_p + pid_i + pid_d;
 
-    /*We know taht the min value of PWM signal is 1000us and the max is 2000. So that
+    /*We know taht the min value of PWM signal is 1000us and the max is 1300. So that
     tells us that the PIDY value can/s oscilate more than -1000 and 1000 because when we
-    have a value of 2000us the maximum value taht we could sybstract is 1000 and when
+    have a value of 1300us the maximum value taht we could sybstract is 1000 and when
     we have a value of 1000us for the PWM sihnal, the maximum value that we could add is 1000
-    to reach the maximum 2000us*/
+    to reach the maximum 1300us*/
     if (PID < -500)
     {
         PID = -500;
@@ -118,18 +118,18 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     {
         pwmRight = 1000;
     }
-    if (pwmRight > 2000)
+    if (pwmRight > 1300)
     {
-        pwmRight = 2000;
+        pwmRight = 1300;
     }
     // Left
     if (pwmLeft < 1000)
     {
         pwmLeft = 1000;
     }
-    if (pwmLeft > 2000)
+    if (pwmLeft > 1300)
     {
-        pwmLeft = 2000;
+        pwmLeft = 1300;
     }
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/
