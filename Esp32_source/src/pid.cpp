@@ -13,7 +13,7 @@ void Pid::initPid(int right_prop_val, int left_prop_val, int min_pwm, int max_pw
     ki = 0.003; // 0.003 --> example value, normally very small
     kd = 4;     // 2.05 --> example value
     ///////////////////////////////////////////////
-    throttle = 1500;
+    throttle = 2000;
     desired_angle = 0;
     time = millis(); // zeit in millis hochzählen
                      // die kleinst möglichen values fürs erste übergeben für esc ...
@@ -118,18 +118,18 @@ void Pid::updatePid(float Gyr_rawX, float Gyr_rawY, float Gyr_rawZ, float Acc_ra
     {
         pwmRight = 1000;
     }
-    if (pwmRight > 1700)
+    if (pwmRight > 2000)
     {
-        pwmRight = 1700;
+        pwmRight = 2000;
     }
     // Left
     if (pwmLeft < 1000)
     {
         pwmLeft = 1000;
     }
-    if (pwmLeft > 1700)
+    if (pwmLeft > 2000)
     {
-        pwmLeft = 1700;
+        pwmLeft = 2000;
     }
     /*Finnaly using the servo function we create the PWM pulses with the calculated
     width for each pulse*/

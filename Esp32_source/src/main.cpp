@@ -8,8 +8,8 @@
 #define SOUND_SPEED 0.034
 #define MIN_DISTANCE 7.0
 
-#define WIFI_SSID "A1-C33D8E"
-#define WIFI_PASSWORD "Bajrektarevic00%"
+#define WIFI_SSID "Bulme-EMC"
+#define WIFI_PASSWORD ""
 
 float accelX, accelY, accelZ;
 float gyroX, gyroY, gyroZ;
@@ -55,7 +55,7 @@ void checkMPUPID();
 
 void setup()
 {
-
+  delay(7000);
   Serial.begin(115200);
 
   // initialize Wifi
@@ -69,7 +69,7 @@ void setup()
   pinMode(trigPin2, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin2, INPUT);
   //myFirebaseDatabase.init();
-  tasker.setInterval(checkObsticles, 500); // check for obsticles every 500ms | using tasker to multithread
+  //tasker.setInterval(checkObsticles, 500); // check for obsticles every 500ms | using tasker to multithread
   tasker.setInterval(checkMPUPID, 1);
 }
 
@@ -77,7 +77,6 @@ void loop()
 {
   tasker.loop();
   //myFirebaseDatabase.upload();
-  //delay(3000);
   Serial.println(myPid.error);
 }
 
